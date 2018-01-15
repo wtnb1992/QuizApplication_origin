@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Quiz Application</string>
+    <string name="explain">クイズは全部で５問出題されます。\nがんばって全問正解を目指しましょう!!</string>
+    <string name="start">開 始</string>
+    <string name="quiz">スタート</string>
+    <string name="result">成績表示</string>
+    <string name="setting">設定</string>
+    <string name="back">TOPに戻る</string>
+    <string name="time">制限時間残り　秒</string>
+    <string name="next">次の問題へ</string>
+    <string name="title">クイズアプリ</string>
+
+
+
+
+</resources>
