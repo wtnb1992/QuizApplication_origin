@@ -31,7 +31,7 @@ public class QuizActivity extends AppCompatActivity {
     int[] array = {0,1,2,3};
     int AnswerNo;
     int QAnswer;
-    int V = 30;   //問題の最大数。変更忘れずに
+    int V;   //問題の最大数。
     int QA;
     int Z;
     boolean bgmsetting;
@@ -48,6 +48,16 @@ public class QuizActivity extends AppCompatActivity {
         setContentView(R.layout.activity_quiz);
         this.bgm = new BgmPlayerClass(this);
 
+        //DBオープンしてMyTableを指定、問題の最大数を取得
+        DatabaseHelper dbHelper = new DatabaseHelper(this);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor c = db.rawQuery("select*from MyTable",null);
+        V = c.getCount();
+        //開いたら閉じましょう
+        c.close();
+        db.close();
+
+
         SharedPreferences pref = getSharedPreferences("questionNo",MODE_PRIVATE|MODE_PRIVATE);
         QuestionNo=pref.getInt("key",9999);
         //ランダムにしたら消す
@@ -62,6 +72,7 @@ public class QuizActivity extends AppCompatActivity {
                     if (Q[i] == x)
                         break;
             }
+
             QuestionNo = 1;
 
         }
@@ -70,17 +81,15 @@ public class QuizActivity extends AppCompatActivity {
 
     @Override
     protected void onResume(){
-       super.onResume();
+        super.onResume();
         setQuestion();
 
         //BGMフラグ
         SharedPreferences pref = getSharedPreferences("bgmsetting",MODE_PRIVATE|MODE_PRIVATE);
         bgmsetting =pref.getBoolean("bgmsetting",true);
-        System.out.println(bgmsetting);
 
         if (bgmsetting == true){
             bgm.start(aaa);
-
         }
 
         //カウントダウン開始
@@ -110,8 +119,6 @@ public class QuizActivity extends AppCompatActivity {
         SharedPreferences.Editor e = pref.edit();
         e.putInt("Z" , Z);
         e.commit();
-
-
     }
 
     @Override
@@ -138,17 +145,16 @@ public class QuizActivity extends AppCompatActivity {
 
 
 
-
+    //ここからDB読み取り開始
     public void setQuestion() {
         //DatabaseHelperクラス読み取り
         DatabaseHelper dbHelper = new DatabaseHelper(this);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        System.out.println(Q[QuestionNo]);
-
         //_idとQuestionNoを比べる
         String sql = "SELECT Pref, Answer0, Answer1, Answer2, Answer3, Answer4 FROM MyTable WHERE _id=" + Q[QuestionNo];
         Cursor c = db.rawQuery(sql,null);
+        //DBのカーソルを最初に持ってくる。(必須)
         c.moveToFirst();
 
         //データベースの変数をセット
@@ -159,7 +165,7 @@ public class QuizActivity extends AppCompatActivity {
         Answer[2] = c.getString(c.getColumnIndex("Answer3"));
         Answer[3] = c.getString(c.getColumnIndex("Answer4"));
 
-        //選択肢ランダム
+        //選択肢ランダム化
         Random r = new Random();
         for (int i = 0; i < 4; i++) {
             array[i] = r.nextInt(4);
@@ -180,6 +186,7 @@ public class QuizActivity extends AppCompatActivity {
         ((Button)findViewById(R.id.button7)).setText(Answer[array[2]]);
         ((Button)findViewById(R.id.button8)).setText(Answer[array[3]]);
         aaa = 1;
+        //ここまで
 
         //イントロクイズ
         if(Q[QuestionNo] == 30){
@@ -199,7 +206,7 @@ public class QuizActivity extends AppCompatActivity {
         @Override
         public void onFinish(){
             ((TextView)findViewById(textView3)).setText("残り時間0秒");
-                TimeUP();
+            TimeUP();
 //            }
 
         }
@@ -265,7 +272,7 @@ public class QuizActivity extends AppCompatActivity {
 
         //アクティビティ起動
         Intent intent = new Intent(this, AnswerActivity.class);
-            startActivity(intent);
+        startActivity(intent);
         if(QAnswer==5){
 
             finish();
@@ -273,87 +280,87 @@ public class QuizActivity extends AppCompatActivity {
 
     }
 
-        public void Answer(Button btnA){
+    public void Answer(Button btnA){
         bgm.stop(aaa);
         countDown.cancel();
 
-            //問題数+1
-            QuestionNo= QuestionNo + 1;
-            SharedPreferences pref = getSharedPreferences("questionNo",MODE_PRIVATE|MODE_PRIVATE);
-            SharedPreferences.Editor e = pref.edit();
-            e.putInt("key", QuestionNo);
-            e.commit();
+        //問題数+1
+        QuestionNo= QuestionNo + 1;
+        SharedPreferences pref = getSharedPreferences("questionNo",MODE_PRIVATE|MODE_PRIVATE);
+        SharedPreferences.Editor e = pref.edit();
+        e.putInt("key", QuestionNo);
+        e.commit();
 
 
-            //ボタンの文字を取得
+        //ボタンの文字を取得
         CharSequence btn = btnA.getText();
         //比較のためstring型に変更
         String answer = btn.toString() ;
-            //正解判定
-            if(answer.equals(Seikai)) {
+        //正解判定
+        if(answer.equals(Seikai)) {
 
-                //正解数読み込み
-                pref = getSharedPreferences("AnswerNo",MODE_PRIVATE|MODE_PRIVATE);
-                AnswerNo=pref.getInt("AnswerNo",0);
-                ++ AnswerNo;
-                //書き込み
-                e = pref.edit();
-                e.putInt("AnswerNo", AnswerNo);
-                e.commit();
+            //正解数読み込み
+            pref = getSharedPreferences("AnswerNo",MODE_PRIVATE|MODE_PRIVATE);
+            AnswerNo=pref.getInt("AnswerNo",0);
+            ++ AnswerNo;
+            //書き込み
+            e = pref.edit();
+            e.putInt("AnswerNo", AnswerNo);
+            e.commit();
 
-                //回答数読み込み
-                pref = getSharedPreferences("QAnswer",MODE_PRIVATE|MODE_PRIVATE);
-                QAnswer=pref.getInt("QAnswer",0);
-                ++ QAnswer;
-                //書き込み
-                e = pref.edit();
-                e.putInt("QAnswer", QAnswer);
-                e.commit();
+            //回答数読み込み
+            pref = getSharedPreferences("QAnswer",MODE_PRIVATE|MODE_PRIVATE);
+            QAnswer=pref.getInt("QAnswer",0);
+            ++ QAnswer;
+            //書き込み
+            e = pref.edit();
+            e.putInt("QAnswer", QAnswer);
+            e.commit();
 
-                //正誤受け渡し
-                pref = getSharedPreferences("QA",MODE_PRIVATE|MODE_PRIVATE);
-                QA=pref.getInt("QA",0);
-                QA=1;
-                //書き込み
-                e = pref.edit();
-                e.putInt("QA", QA);
-                e.commit();
+            //正誤受け渡し
+            pref = getSharedPreferences("QA",MODE_PRIVATE|MODE_PRIVATE);
+            QA=pref.getInt("QA",0);
+            QA=1;
+            //書き込み
+            e = pref.edit();
+            e.putInt("QA", QA);
+            e.commit();
 
-                Intent intent = new Intent(this, AnswerActivity.class);
-                startActivity(intent);
-                if(QAnswer==5){
+            Intent intent = new Intent(this, AnswerActivity.class);
+            startActivity(intent);
+            if(QAnswer==5){
 
-                    finish();
-                }
-            }else{
+                finish();
+            }
+        }else{
 
-                //回答数読み込み
-                pref = getSharedPreferences("QAnswer",MODE_PRIVATE|MODE_PRIVATE);
-                QAnswer=pref.getInt("QAnswer",0);
-                ++ QAnswer;
-                //書き込み
-                e = pref.edit();
-                e.putInt("QAnswer", QAnswer);
-                e.commit();
+            //回答数読み込み
+            pref = getSharedPreferences("QAnswer",MODE_PRIVATE|MODE_PRIVATE);
+            QAnswer=pref.getInt("QAnswer",0);
+            ++ QAnswer;
+            //書き込み
+            e = pref.edit();
+            e.putInt("QAnswer", QAnswer);
+            e.commit();
 
-                //正誤受け渡し
-                pref = getSharedPreferences("QA",MODE_PRIVATE|MODE_PRIVATE);
-                QA=pref.getInt("QA",0);
-                QA=0;
-                //書き込み
-                e = pref.edit();
-                e.putInt("QA", QA);
-                e.commit();
+            //正誤受け渡し
+            pref = getSharedPreferences("QA",MODE_PRIVATE|MODE_PRIVATE);
+            QA=pref.getInt("QA",0);
+            QA=0;
+            //書き込み
+            e = pref.edit();
+            e.putInt("QA", QA);
+            e.commit();
 
-                Intent intent = new Intent(this, AnswerActivity.class);
-                startActivity(intent);
+            Intent intent = new Intent(this, AnswerActivity.class);
+            startActivity(intent);
 
-                //5問終了したら
-                if(QAnswer==5){
-                    finish();
-                }
-
+            //5問終了したら
+            if(QAnswer==5){
+                finish();
             }
 
         }
+
+    }
 }

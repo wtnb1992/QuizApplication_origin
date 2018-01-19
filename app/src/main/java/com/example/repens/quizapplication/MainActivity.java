@@ -24,8 +24,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-            setScreenMain();
-            this.bgm = new BgmPlayerClass(this);
+        setScreenMain();
+        this.bgm = new BgmPlayerClass(this);
     }
 
     private void setScreenMain(){
@@ -34,18 +34,18 @@ public class MainActivity extends AppCompatActivity {
         Z=pref.getInt("Z",0);
         if(Z == 0) {
 
-        setContentView(R.layout.activity_top);
-        startview = findViewById(R.id.textView);
+            setContentView(R.layout.activity_top);
+            startview = findViewById(R.id.textView);
 
             //フォント変更
             TextView top = (TextView)findViewById(R.id.textView7);
             top.setTypeface(Typeface.createFromAsset(getAssets(),"hkgyokk.ttf"));
-        startview.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                setContentView(R.layout.activity_main);
-            }
-        });        }else{        setContentView(R.layout.activity_main);}
+            startview.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v){
+                    setContentView(R.layout.activity_main);
+                }
+            });        }else{        setContentView(R.layout.activity_main);}
         //画面表示記憶
         pref = getSharedPreferences("Z",MODE_PRIVATE|MODE_PRIVATE);
         Z=pref.getInt("Z",1);
@@ -140,6 +140,9 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
                 break;
             case R.id.button2:
+//                intent = new Intent(this,GlaphActivity.class);
+//                intent = new Intent(this,TopActivity.class);
+
                 intent = new Intent(this,ResultActivity.class);
                 startActivity(intent);
                 break;
