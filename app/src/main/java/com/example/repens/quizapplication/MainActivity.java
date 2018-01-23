@@ -141,13 +141,14 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.button2:
 //                intent = new Intent(this,GlaphActivity.class);
-//                intent = new Intent(this,TopActivity.class);
+                intent = new Intent(this,TopActivity.class);
 
-                intent = new Intent(this,ResultActivity.class);
+//                intent = new Intent(this,ResultActivity.class);
                 startActivity(intent);
                 break;
             case R.id.button3:
                 intent = new Intent(this,SettingActivity.class);
+//                intent = new Intent(this,TopActivity.class);
                 startActivity(intent);
                 break;
 

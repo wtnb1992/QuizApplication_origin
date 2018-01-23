@@ -1,8 +1,10 @@
 package com.example.repens.quizapplication;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 
@@ -49,4 +51,14 @@ public class SettingActivity extends AppCompatActivity implements CompoundButton
 
     }
 
+/*    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.button10:
+                Intent intent = new Intent(this,TopActivity.class);
+                startActivity(intent);
+                break;
+
+
+        }
+    }*/
 }

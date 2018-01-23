@@ -1,7 +1,10 @@
 package com.example.repens.quizapplication;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.StandaloneActionMode;
@@ -9,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Created by repens on 2017/08/08.
@@ -20,6 +24,7 @@ public class AnswerActivity extends AppCompatActivity {
     int QAnswer;
     int QA;
     int Z;
+    int sample;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +82,31 @@ public class AnswerActivity extends AppCompatActivity {
                 //比較のためstring型に変更
                 String Answer = btn.toString() ;
                 if(Answer.equals("TOPに戻る")){
+
+//DBに正解数を追加
+                    DatabaseChart dbHelper = new DatabaseChart(this);
+                    SQLiteDatabase db = dbHelper.getWritableDatabase();
+                    Cursor c = db.rawQuery("select*from AnswerTable",null);
+                    sample = c.getCount();
+                    c.close();
+
+                    //追加データ設定。      value.put("追加するDBのカラム","追加する内容")　　　※追加する内容が変数の場合は""は必要ない
+                    //ここからDB更新　ただし、.javaには更新分は反映されない。
+                    sample = AnswerNo;
+                    ContentValues values = new ContentValues();
+                    values.put("Number", sample);   //sampleは変数です。18行目に定義。
+
+                    long ret;       //DBに追加するための変数を設定。
+
+                    try {
+                        ret = db.insert("AnswerTable", null, values);    //insertでDBに追加。 db.insert("DBのテーブル名",null,追加内容を定義した変数)
+
+                    } finally {
+                        db.close();    //開いたDBはしっかり閉じましょう。
+                    }
+//ここまで
+
+
                     SharedPreferences pref = getSharedPreferences("Z",MODE_PRIVATE|MODE_PRIVATE);
                     Z=pref.getInt("Z",1);
                     Z= 1;
@@ -95,13 +125,14 @@ public class AnswerActivity extends AppCompatActivity {
                 SharedPreferences pref2 = getSharedPreferences("QAnswer",MODE_PRIVATE|MODE_PRIVATE);
                 QAnswer=pref2.getInt("QAnswer",0);
 
-                if(QAnswer == 5){  //出題数増やすなら数字変更
+                if(QAnswer == 3){  //出題数増やすなら数字変更
                         ((TextView) findViewById(R.id.textView5)).setText(answer);
                         ((Button) findViewById(R.id.button4)).setText("TOPに戻る");
                         ((TextView) findViewById(R.id.textView5)).setText(answer + "問正解できました!!");
                         ImageView imageView = (ImageView) findViewById(R.id.imageView2);
                         imageView.setImageResource(R.drawable.syuuryou);
-                }else{
+
+                    }else{
                     finish();
                 }
         }

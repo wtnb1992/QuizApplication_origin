@@ -38,9 +38,11 @@ public class ResultActivity extends AppCompatActivity {
 
 
                 //DBオープン
-                DatabaseHelper dbHelper = new DatabaseHelper(this);
+//                DatabaseHelper dbHelper = new DatabaseHelper(this);
+                DatabaseChart dbHelper = new DatabaseChart(this);
                 SQLiteDatabase db = dbHelper.getWritableDatabase();
-                Cursor c = db.rawQuery("select*from MyTable",null);
+//                Cursor c = db.rawQuery("select*from MyTable",null);
+                Cursor c = db.rawQuery("select*from AnswerTable",null);
                 sample = c.getCount();
                 c.close();
 
@@ -48,17 +50,19 @@ public class ResultActivity extends AppCompatActivity {
                 //ここからDB更新　ただし、.javaには更新分は反映されない。
                 sample = sample + 1;
                 ContentValues values = new ContentValues();
-                values.put("Pref", sample);   //sampleは変数です。18行目に定義。
+                values.put("Number", sample);   //sampleは変数です。18行目に定義。
+
+/*                values.put("Pref", sample);   //sampleは変数です。18行目に定義。
                 values.put("Answer0", "test");
                 values.put("Answer1", "テスト");
                 values.put("Answer2", "てすと");
                 values.put("Answer3", "試験");
                 values.put("Answer4", "tesuto");
-
+*/
                 long ret;       //DBに追加するための変数を設定。
 
                 try {
-                    ret = db.insert("MyTable", null, values);    //insertでDBに追加。 db.insert("DBのテーブル名",null,追加内容を定義した変数)
+                    ret = db.insert("AnswerTable", null, values);    //insertでDBに追加。 db.insert("DBのテーブル名",null,追加内容を定義した変数)
 
                 } finally {
                     db.close();    //開いたDBはしっかり閉じましょう。

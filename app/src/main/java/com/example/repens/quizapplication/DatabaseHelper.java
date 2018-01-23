@@ -13,6 +13,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         //任意の"dbファイル名"と.verを指定
         super(context,"MyTable.db",null,1);
+
     }
 
     @Override
@@ -31,7 +32,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 ")");
         //初期データ投入
 //        db.execSQL("INSERT INFO MyTable(Pref,Answer0, Answer1, Answer2, Answer3, Answer4) values ('問題文','正解','回答１','','','');");
-/**        db.execSQL("INSERT INTO MyTable(Pref,Answer0, Answer1, Answer2, Answer3, Answer4) values ('日本の首都といえばどこでしょう？','東京都','北海道','大阪府','東京都','新潟県');");
+        db.execSQL("INSERT INTO MyTable(Pref,Answer0, Answer1, Answer2, Answer3, Answer4) values ('日本の首都といえばどこでしょう？','東京都','北海道','大阪府','東京都','新潟県');");
  db.execSQL("INSERT INTO MyTable(Pref,Answer0, Answer1, Answer2, Answer3, Answer4) values ('落語の噺の１つで、とても長い名前の男の子が登場する噺といえばなんでしょう？','寿限無','まんじゅうこわい','寿限無','こんにゃく問答','目黒のさんま');");
  db.execSQL("INSERT INTO MyTable(Pref,Answer0, Answer1, Answer2, Answer3, Answer4) values ('「一見簡単そうに見えるが、最初に行うことは難しい」ということわざ、コロンブスの何でしょう？','卵','卯','鶏','夢','卵');");
  db.execSQL("INSERT INTO MyTable(Pref,Answer0, Answer1, Answer2, Answer3, Answer4) values ('コナン・ドイルの作品、「シャーロック・ホームズ」に出てくるホームズの友人であり医者でもある人物の名前は？','ワトソン','ワトソン','パトロン','ハドソン','ワセリン');");
@@ -61,7 +62,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
  db.execSQL("INSERT INTO MyTable(Pref,Answer0, Answer1, Answer2, Answer3, Answer4) values ('人体の構成成分の中で一番多いものといえば？','水分','ミネラル','水分','タンパク質','脂肪');");
  db.execSQL("INSERT INTO MyTable(Pref,Answer0, Answer1, Answer2, Answer3, Answer4) values ('強烈なにおいを放つ世界最大の花といえば？','ラフレシア','ひまわり','ラフレシア','カサブランカ','リンドウ');");
  db.execSQL("INSERT INTO MyTable(Pref,Answer0, Answer1, Answer2, Answer3, Answer4) values ('【イントロクイズ】\n答えはセレナード','セレナード','セレナード','エチュード','ノクターン','ワルツ');");
- */
+
 
     }
 

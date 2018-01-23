@@ -273,7 +273,7 @@ public class QuizActivity extends AppCompatActivity {
         //アクティビティ起動
         Intent intent = new Intent(this, AnswerActivity.class);
         startActivity(intent);
-        if(QAnswer==5){
+        if(QAnswer==3){
 
             finish();
         }
@@ -328,7 +328,7 @@ public class QuizActivity extends AppCompatActivity {
 
             Intent intent = new Intent(this, AnswerActivity.class);
             startActivity(intent);
-            if(QAnswer==5){
+            if(QAnswer==3){
 
                 finish();
             }
@@ -355,8 +355,8 @@ public class QuizActivity extends AppCompatActivity {
             Intent intent = new Intent(this, AnswerActivity.class);
             startActivity(intent);
 
-            //5問終了したら
-            if(QAnswer==5){
+            //5問終了したら  変更すると出題問題数が変わる(AnswerActivityと上の二つも忘れず変更)
+            if(QAnswer==3){
                 finish();
             }
 
